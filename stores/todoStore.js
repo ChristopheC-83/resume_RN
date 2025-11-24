@@ -1,26 +1,49 @@
 import { create } from "zustand";
+import { saveTodoList, loadTodoList } from "../utilities/storage";
+import uuid from "react-native-uuid";
 
 export const useTodos = create((set, get) => ({
   todos: [],
-  setTodos: (newTodos) => set({ todos: newTodos }),
 
-  addTodo: (id, title) =>
-    set((state) => ({
-      todos: [...state.todos, { id, title, isDone: false }],
-    })),
+  async loadTodos() {
+    const loaded = await loadTodoList("@todoList");
+    if (loaded) set({ todos: loaded });
+  },
 
-  toggleTodo: (id) =>
-    set((state) => ({
-      todos: state.todos.map((t) =>
-        t.id === id ? { ...t, isDone: !t.isDone } : t
-      ),
-    })),
+  setTodos(newTodos) {
+    set({ todos: newTodos });
+    saveTodoList("@todoList", newTodos);
+  },
 
-  removeTodo: (id) =>
-    set((state) => ({
-      todos: state.todos.filter((t) => t.id !== id),
-    })),
+  addTodo(title) {
+    const newTodo = { id: uuid.v4(), title, isDone: false };
+    const updated = [...get().todos, newTodo];
+    set({ todos: updated });
+    saveTodoList("@todoList", updated);
+  },
+
+  toggleTodo(id) {
+    const updated = get().todos.map((t) =>
+      t.id === id ? { ...t, isDone: !t.isDone } : t
+    );
+    set({ todos: updated });
+    saveTodoList("@todoList", updated);
+  },
+
+  removeTodo(id) {
+    const updated = get().todos.filter((t) => t.id !== id);
+    set({ todos: updated });
+    saveTodoList("@todoList", updated);
+  },
 
   filter: "all", // "all" | "done" | "todo"
   setFilter: (f) => set({ filter: f }),
+
+  filteredTodos: () => {
+    const { todos, filter } = get();
+    if (!todos) return [];
+    if (filter === "done") return todos.filter((t) => t.isDone);
+    if (filter === "todo") return todos.filter((t) => !t.isDone);
+    return todos;
+  },
 }));

@@ -3,6 +3,7 @@ import { s } from "./Footer.style";
 import { useTodos } from "../../stores/todoStore";
 
 export default function Footer() {
+  
   const filter = useTodos((s) => s.filter);
   const setFilter = useTodos((s) => s.setFilter);
   const todos = useTodos((s) => s.todos);

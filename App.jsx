@@ -6,18 +6,12 @@ import { useTodos } from "./stores/todoStore";
 import { useEffect } from "react";
 import RemoveAllDone from "./components/RemoveAllDone/RemoveAllDone";
 import AddItem from "./components/AddItem/AddItem";
-import { loadTodoList } from "./utilities/storage";
 
 export default function App() {
-  const setTodos = useTodos((s) => s.setTodos);
-
-  async function loadInitialTodos() {
-    const data = await loadTodoList("@todoList");
-    setTodos(data ?? []);
-  }
+  const loadTodos = useTodos((s) => s.loadTodos);
 
   useEffect(() => {
-    loadInitialTodos();
+    loadTodos();
   }, []);
 
   return (
