@@ -18,7 +18,7 @@ export default function AddItemDialog({ visible, onClose }) {
   function handleAddAndContinue() {
     const newTodo = {
       id: uuid.v4(),
-      title: inputValue,
+      title: inputValue.trim(),
     };
     addTodo(newTodo.id, newTodo.title);
     setInputValue("");
