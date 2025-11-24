@@ -1,0 +1,2 @@
+longPress ou press sur les btn poubelle et poubelle isDone
+ça doit être paramétrable

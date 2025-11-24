@@ -1,0 +1,54 @@
+Pour lancer le projet de base en jsx
+npx create-expo-app nom_projet --template blank
+
+on entre de dans le projet
+cd nom_projet
+code .
+
+on lance 
+npx expo start
+
+Avec smartphone, on lance l'appli expogo
+on scan qr code 
+Avec emulateur android, on le lance avec android studio
+puis dans le vscode du projet
+dans terminal, on appuie sur la touche "a"
+
+
+si plantage
+ConfigError: Cannot resolve entry file: The `main` field defined in your `package.json` points to an unresolvable or non-existent path
+dans package.json
+"main": "node_modules/expo/AppEntry.js",
+
+Pour rafraichir, dans le terminal, on appuie sur "r" appuie sur la touche "r"
+
+
+si l'app se déplace dans la barre d'horloge, en haut de l'ecran, on installe
+npm install react-native-safe-area-context
+Dans app.js, on importe
+
+import { Text } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+
+export default function App() {
+  return (
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Text>Mes Composants</Text>
+      </SafeAreaView>
+    </SafeAreaProvider>
+  );
+}
+
+
+Pour ajouter une boite de dialogue
+npm install react-native-dialog
+
+Pour les id
+npm i react-native-uuid
+
+
+
+style en ligne dans le jsx, en dessous le composant ou dans un fichier.js à part
+
+Par defaut les composants sont display:flex et flex-direction : column
