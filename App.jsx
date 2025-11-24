@@ -4,21 +4,27 @@ import ListCards from "./components/List/ListCards";
 import Footer from "./components/Footer/Footer";
 import { useTodos } from "./stores/todoStore";
 import { useEffect } from "react";
-import { falseTodo } from "./datas/todoFalse";
 import RemoveAllDone from "./components/RemoveAllDone/RemoveAllDone";
 import AddItem from "./components/AddItem/AddItem";
-import AddItemDialog from "./components/AddItem/AddItemDialog";
+import { loadTodoList } from "./utilities/storage";
 
 export default function App() {
   const setTodos = useTodos((s) => s.setTodos);
 
+  async function loadInitialTodos() {
+    const data = await loadTodoList("@todoList");
+    setTodos(data ?? []);
+  }
+
   useEffect(() => {
-    setTodos(falseTodo);
+    loadInitialTodos();
   }, []);
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#222", position: "relative" }}>
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "#222", position: "relative" }}
+      >
         <Header />
         <ListCards />
         <Footer />

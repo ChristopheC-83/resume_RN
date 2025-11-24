@@ -1,14 +1,17 @@
 import { View, Text } from "react-native";
 import { s } from "./AddItemDialog.style";
 import Dialog from "react-native-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import uuid from "react-native-uuid";
 import { useTodos } from "../../stores/todoStore";
+import { saveTodoList } from "../../utilities/storage";
 
 // import Dialog from "react-native-dialog";
 
 export default function AddItemDialog({ visible, onClose }) {
   const addTodo = useTodos((s) => s.addTodo);
+  const todos = useTodos((s) => s.todos);
+  let isFirstRender= true
 
   const [inputValue, setInputValue] = useState("");
 
@@ -25,6 +28,16 @@ export default function AddItemDialog({ visible, onClose }) {
     handleAddAndContinue();
     onClose();
   }
+
+  useEffect(() => {
+    if (!isFirstRender) {
+      saveTodoList("@todoList", todos);
+    } else {
+      isFirstRender = false;
+    }
+  }, [todos])
+
+
 
   return (
     <Dialog.Container visible={visible} onBackdropPress={onClose}>
